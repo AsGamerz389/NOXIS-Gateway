@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: noxis-gateway
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: NOXIS_API_KEYS
+        sync: false
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: UPSTREAM_TIMEOUT
+        value: "45"
+      - key: MAX_PROVIDER_ATTEMPTS
+        value: "3"
+      - key: DAS_APIA_BASE
+        value: "https://das-apia.netlify.app"
