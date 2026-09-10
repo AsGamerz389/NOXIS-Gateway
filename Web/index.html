@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N?XIS API Directory</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,monospace;background:#0a0a0f;color:#e0e0e0;min-height:100vh;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+header{text-align:center;padding:60px 20px 40px;border-bottom:1px solid #1a1a2e}
+header h1{font-size:2.5rem;background:linear-gradient(135deg,#00ff88,#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;letter-spacing:2px}
+header p{color:#888;font-size:1rem;max-width:600px;margin:0 auto}
+.section{padding:40px 0}
+.section-title{font-size:1.5rem;color:#00ff88;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.section-title::before{content:'';display:inline-block;width:4px;height:24px;background:linear-gradient(180deg,#00ff88,#00aaff);border-radius:2px}
+.section-desc{color:#666;margin-bottom:24px;font-size:0.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.card{background:#111122;border:1px solid #1a1a2e;border-radius:12px;padding:20px;transition:all .2s}
+.card:hover{border-color:#00ff8855;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,136,0.05)}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.card-name{font-size:1.1rem;font-weight:600;color:#fff}
+.card-method{font-size:0.7rem;padding:3px 8px;border-radius:4px;font-weight:700;text-transform:uppercase;background:#00ff8822;color:#00ff88;border:1px solid #00ff8844}
+.card-method.post{background:#00aaff22;color:#00aaff;border-color:#00aaff44}
+.card-desc{color:#888;font-size:0.85rem;margin-bottom:12px}
+.card-url{display:flex;align-items:center;gap:8px;background:#0a0a1a;border-radius:8px;padding:8px 12px;font-family:monospace;font-size:0.78rem;color:#aaa;word-break:break-all;flex:1;min-width:0}
+.btn-copy{background:#1a1a2e;border:1px solid #333;color:#aaa;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:0.75rem;font-weight:600;transition:all .2s;white-space:nowrap}
+.btn-copy:hover{background:#00ff8822;border-color:#00ff88;color:#00ff88}
+.btn-copy.copied{background:#00ff88;color:#000;border-color:#00ff88}
+.unified-section{background:#0d0d1a;border:1px solid #1a1a2e;border-radius:16px;padding:32px;margin-top:20px}
+.footer{text-align:center;padding:40px 20px;color:#444;font-size:0.8rem;border-top:1px solid #1a1a2e;margin-top:40px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}header h1{font-size:1.8rem}header{padding:40px 16px 24px}.container{padding:12px}.card{padding:14px}.unified-section{padding:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>N?XIS API Directory</h1>
+<p>A lightweight, unified API gateway routing to 14 upstream AI providers</p>
+</header>
+
+<div class="section">
+<h2 class="section-title">Upstream Providers</h2>
+<p class="section-desc">Direct access to all 14 upstream endpoints</p>
+<div class="grid" id="providers-grid"></div>
+</div>
+
+<div class="section">
+<div class="unified-section">
+<h2 class="section-title">N?XIS Unified API</h2>
+<p class="section-desc">OpenAI-compatible endpoints for standardized access</p>
+<div class="grid" id="unified-grid"></div>
+</div>
+</div>
+
+<footer class="footer">
+<p>N?XIS API Gateway &mdash; Routing &amp; Normalization Layer</p>
+</footer>
+</div>
+
+<script>
+var providers=[
+{name:"AI Detector",method:"GET",url:"https://das-apia.netlify.app/api/ai-detector?q=text+to+check",desc:"Detect whether text is AI-generated or human-written"},
+{name:"Gemini",method:"GET",url:"https://das-apia.netlify.app/api/gemini?q=hello",desc:"Google Gemini conversational AI"},
+{name:"DALL-E",method:"GET",url:"https://das-apia.netlify.app/api/dalle?q=cat",desc:"AI image generation from text prompts"},
+{name:"GPT-3",method:"GET",url:"https://das-apia.netlify.app/api/gpt3?q=hello",desc:"OpenAI GPT-3 language model"},
+{name:"Bible AI",method:"GET",url:"https://das-apia.netlify.app/api/bible-ai?q=jesus",desc:"AI-powered Bible study and Q&A"},
+{name:"DeepSeek R1",method:"GET",url:"https://das-apia.netlify.app/api/deepseek-r1?q=hii",desc:"DeepSeek R1 reasoning model"},
+{name:"DeepSeek V3",method:"GET",url:"https://das-apia.netlify.app/api/deepseek-v3?q=hii",desc:"DeepSeek V3 language model"},
+{name:"Cohere",method:"GET",url:"https://das-apia.netlify.app/api/cohere?q=hii",desc:"Cohere language model"},
+{name:"Llama Meta",method:"GET",url:"https://das-apia.netlify.app/api/llama-meta?q=hii",desc:"Meta Llama open-source model"},
+{name:"Qwen",method:"GET",url:"https://das-apia.netlify.app/api/qwen?q=hii",desc:"Alibaba Qwen language model"},
+{name:"GPT-5",method:"GET",url:"https://das-apia.netlify.app/api/gpt-5?q=hii",desc:"OpenAI GPT-5 language model"},
+{name:"Deep AI",method:"GET",url:"https://das-apia.netlify.app/api/deep-ai?query=hii",desc:"Deep AI text generation"},
+{name:"GPTLogic",method:"GET",url:"https://das-apia.netlify.app/api/gptlogic?q=hii&prompt=be+friendly",desc:"GPTLogic with customizable prompts"},
+{name:"Copilot",method:"GET",url:"https://das-apia.netlify.app/api/copilot?text=hii",desc:"Microsoft Copilot assistant"}
+];
+
+var unified=[
+{name:"Chat Completions",method:"POST",url:"/v1/chat/completions",desc:"OpenAI-compatible chat completions endpoint"},
+{name:"Models",method:"GET",url:"/v1/models",desc:"List all available models"},
+{name:"Image Generation",method:"POST",url:"/v1/images/generations",desc:"Generate images via DALL-E adapter"},
+{name:"Health Check",method:"GET",url:"/health",desc:"Gateway health status"}
+];
+
+function makeCard(item){
+var d=document.createElement("div");
+d.className="card";
+var m=item.method==="POST"?"post":"";
+d.innerHTML='<div class="card-header"><span class="card-name">'+item.name+'</span><span class="card-method '+m+'">'+item.method+'</span></div><div class="card-desc">'+item.desc+'</div><div style="display:flex;gap:8px;align-items:center"><div class="card-url">'+item.url+'</div><button class="btn-copy" onclick="copyUrl(this,\''+item.url.replace(/'/g,"\\'")+'\')">Copy</button></div>';
+return d;
+}
+
+function copyUrl(btn,url){
+navigator.clipboard.writeText(url).then(function(){
+btn.textContent="Copied!";
+btn.classList.add("copied");
+setTimeout(function(){btn.textContent="Copy";btn.classList.remove("copied")},2000);
+}).catch(function(){
+var ta=document.createElement("textarea");
+ta.value=url;document.body.appendChild(ta);ta.select();
+try{document.execCommand("copy");btn.textContent="Copied!";btn.classList.add("copied");setTimeout(function(){btn.textContent="Copy";btn.classList.remove("copied")},2000)}catch(e){btn.textContent="Failed"}
+document.body.removeChild(ta);
+});
+}
+
+var pg=document.getElementById("providers-grid");
+providers.forEach(function(p){pg.appendChild(makeCard(p))});
+
+var ug=document.getElementById("unified-grid");
+unified.forEach(function(u){ug.appendChild(makeCard(u))});
+</script>
+</body>
+</html>
